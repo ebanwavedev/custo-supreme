@@ -19,7 +19,6 @@ export function Landing() {
         <HeroSection />
         <ServicesSection />
         <AboutSection />
-        <QuoteSection />
         <ProductGuarantee />
         <InspectionsSection />
         <TestimonialsSection />
