@@ -8,7 +8,6 @@ import { TestimonialsSection } from "./TestimonialsSection";
 import { FAQSection } from "./FAQSection";
 import { ContactSection } from "./ContactSection";
 import { Footer } from "./Footer";
-import { QuoteSection } from "./QuoteSection";
 import { CareersSection } from "./CareersSection";
 import { Chatbot } from "./Chatbot";
 
