@@ -34,7 +34,7 @@ export function ContactSection() {
             className="flex items-center space-x-4 text-gray-800 hover:text-primary transition"
           >
             <PhoneIcon className="h-6 w-6 text-primary" />
-            <span className="font-medium">Phone: (877) 819-2351</span>
+            <span className="font-medium">Phone: +1 (877) 819-2351</span>
           </Link>
           <Link
             href="mailto:customsupreme@gmail.com"
