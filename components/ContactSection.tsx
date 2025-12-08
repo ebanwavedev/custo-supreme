@@ -41,7 +41,7 @@ export function ContactSection() {
             className="flex items-center space-x-4 text-gray-800 hover:text-primary transition"
           >
             <MailIcon className="h-6 w-6 text-primary" />
-            <span className="font-medium">Email: admin@custosupreme.com</span>
+            <span className="font-medium">Email: admin@custosupreme.com23</span>
           </Link>
         </div>
       </div>
