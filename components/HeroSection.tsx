@@ -254,13 +254,6 @@ export function HeroSection() {
           >
             <Button
               size="lg"
-              className="bg-primary text-white hover:bg-primary/90 text-lg px-8 py-3 w-full sm:w-auto font-semibold"
-              onClick={() => scrollToSection("quote")}
-            >
-              Get Instant Estimate
-            </Button>
-            <Button
-              size="lg"
               variant="outline"
               className="bg-white/10 text-white border-white hover:bg-white/20 text-lg px-8 py-3 w-full sm:w-auto font-semibold"
               onClick={() => setShowLeadForm(true)}
