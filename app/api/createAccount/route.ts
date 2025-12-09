@@ -7,9 +7,23 @@ const clientId = process.env.ZOHO_CLIENT_ID!;
 const clientSecret = process.env.ZOHO_CLIENT_SECRET!;
 
 export async function POST(request: NextRequest) {
-  const bookingDetails = await request.json();
+  let bookingDetails;
 
-  let accessToken = await kv.get('zoho_access_token');
+  // ✅ Safe JSON parsing
+  try {
+    bookingDetails = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+  }
+
+  let accessToken: string | null = null;
+
+  // ✅ Safe KV access
+  try {
+    accessToken = await kv.get('zoho_access_token');
+  } catch (e) {
+    console.error('KV not configured properly:', e);
+  }
 
   if (!accessToken) {
     accessToken = await refreshAccessToken();
@@ -18,19 +32,21 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  const nameParts = bookingDetails.name?.trim()?.split(' ') || [];
+
   const leadData = {
     data: [
       {
-        Company: bookingDetails.company,
-        First_Name: bookingDetails.name.split(' ')[0] || 'Unknown',
-        Last_Name: bookingDetails.name.split(' ')[1] || 'Unknown',
-        Email: bookingDetails.email,
-        Phone: bookingDetails.phone,
+        Company: bookingDetails.company || 'Unknown',
+        First_Name: nameParts[0] || 'Unknown',
+        Last_Name: nameParts.slice(1).join(' ') || 'Unknown',
+        Email: bookingDetails.email || '',
+        Phone: bookingDetails.phone || '',
         Description: bookingDetails.additionalInfo || '',
         Street: bookingDetails.street || '',
         City: bookingDetails.city || '',
         State: bookingDetails.state || '',
-        Zip_Code: bookingDetails.zipCode || '',
+        Postal_Code: bookingDetails.zipCode || '',
         Lead_Source: 'Website',
       },
     ],
@@ -46,13 +62,11 @@ export async function POST(request: NextRequest) {
   });
 
   if (response.status === 401) {
-    // Access token may have expired; refresh it
     accessToken = await refreshAccessToken();
     if (!accessToken) {
       return NextResponse.json({ error: 'Failed to refresh access token' }, { status: 500 });
     }
 
-    // Retry the request with the new access token
     response = await fetch('https://www.zohoapis.com/crm/v3/Leads', {
       method: 'POST',
       headers: {
@@ -63,25 +77,29 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  const text = await response.text();
+
   if (!response.ok) {
-    const text = await response.text();
     console.error('Zoho raw error:', text);
-    
     return NextResponse.json(
-      { success: false, error: 'Failed to create lead in Zoho CRM.' },
+      { success: false, zohoError: text },
       { status: response.status }
     );
   }
 
-  const responseData = await response.json();
-  return NextResponse.json({ success: true, data: responseData });
+  return NextResponse.json({ success: true, data: JSON.parse(text) });
 }
 
 async function refreshAccessToken(): Promise<string | null> {
-  const refreshToken = await kv.get('zoho_refresh_token');
+  let refreshToken: string | null = null;
+
+  try {
+    refreshToken = await kv.get('zoho_refresh_token');
+  } catch (e) {
+    console.error('KV error (refresh token):', e);
+  }
 
   if (!refreshToken) {
-    console.error('Refresh token not available');
     return null;
   }
 
@@ -104,8 +122,11 @@ async function refreshAccessToken(): Promise<string | null> {
     return null;
   }
 
-  // Update the access token in Vercel KV
-  await kv.set('zoho_access_token', data.access_token, { ex: 3600 }); // Set expiration to 1 hour
+  try {
+    await kv.set('zoho_access_token', data.access_token, { ex: 3600 });
+  } catch (e) {
+    console.error('KV write error:', e);
+  }
 
   return data.access_token;
 }
