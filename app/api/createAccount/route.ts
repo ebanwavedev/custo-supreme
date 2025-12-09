@@ -1,7 +1,6 @@
 // app/api/createAccount/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
-import { kv } from '@vercel/kv';
 
 const clientId = process.env.ZOHO_CLIENT_ID!;
 const clientSecret = process.env.ZOHO_CLIENT_SECRET!;
