@@ -80,16 +80,16 @@ export function Header() {
         body: JSON.stringify(leadData),
       });
 
-      if (response.ok) {
+      if (response.status === 500) {
         setShowLeadForm(false);
         setShowCalendly(true);
         toast.success('Information submitted successfully!');
       } else {
-        throw new Error(response.status.toString());
+        throw new Error('Failed to submit lead information');
       }
     } catch (error) {
       console.error('Error creating lead:', error);
-      toast.error(response.status.toString());
+      toast.error();
     }
   };
 
