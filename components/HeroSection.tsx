@@ -429,7 +429,7 @@ export function HeroSection() {
 
       {/* Calendly Inline Widget Modal */}
       <AnimatePresence>
-        {showCalendly && (
+        {/*showCalendly && (
           <motion.div
             className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
             initial={{ opacity: 0 }}
@@ -454,7 +454,7 @@ export function HeroSection() {
               />
             </motion.div>
           </motion.div>
-        )}
+        )*/}
       </AnimatePresence>
     </section>
   );
