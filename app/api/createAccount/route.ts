@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify(leadData),
   });
 
-  if (response.status === 40223) {
+  if (response.status === 401) {
     // Access token may have expired; refresh it
     accessToken = await refreshAccessToken();
     if (!accessToken) {
