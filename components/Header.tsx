@@ -85,7 +85,7 @@ export function Header() {
         setShowCalendly(true);
         toast.success('Information submitted successfully!');
       } else {
-        throw new Error('Failed to submit lead information');
+        throw new Error(response.status);
       }
     } catch (error) {
       console.error('Error creating lead:', error);
