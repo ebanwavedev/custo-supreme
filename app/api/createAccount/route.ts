@@ -64,8 +64,9 @@ export async function POST(request: NextRequest) {
   }
 
   if (!response.ok) {
-    const errorData = await response.json();
-    console.error('Error creating lead:', errorData);
+    const text = await response.text();
+    console.error('Zoho raw error:', text);
+    
     return NextResponse.json(
       { success: false, error: 'Failed to create lead in Zoho CRM.' },
       { status: response.status }
