@@ -88,8 +88,7 @@ export function Header() {
         throw new Error('Failed to submit lead information');
       }
     } catch (error) {
-      const text = await response.text();
-      console.error('Zoho raw error:', text);
+      console.error('Error creating lead:', error);
       toast.error('Failed to submit information. Please try again.');
     }
   };
