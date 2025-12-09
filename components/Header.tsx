@@ -89,7 +89,7 @@ export function Header() {
       }
     } catch (error) {
       console.error('Error creating lead:', error);
-      toast.error();
+      toast.error('Failed to submit information. Please try again.');
     }
   };
 
