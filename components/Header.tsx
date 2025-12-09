@@ -80,7 +80,7 @@ export function Header() {
         body: JSON.stringify(leadData),
       });
 
-      if (response.status === 500) {
+      if (response.ok) {
         setShowLeadForm(false);
         setShowCalendly(true);
         toast.success('Information submitted successfully!');
