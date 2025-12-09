@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         Street: bookingDetails.street || '',
         City: bookingDetails.city || '',
         State: bookingDetails.state || '',
-        Postal_Code: bookingDetails.zipCode || '',
+        Zip_Code: bookingDetails.zipCode || '',
         Lead_Source: 'Website',
       },
     ],
